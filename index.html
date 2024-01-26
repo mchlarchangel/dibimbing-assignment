@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0px;
+        }
+
+        h2 {
+            font-size: 3rem;
+        }
+
+        input,
+        button {
+            margin: 5px;
+        }
+
+        header {
+            position: relative;
+            display: flex;
+            height: 30vh;
+        }
+
+        .home {
+            width: 100%;
+            align-self: center;
+            text-align: center;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .history-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .history-form h3 {
+            position: absolute;
+        }
+
+        #history {
+            position: absolute;
+            margin-top: 55px;
+            text-align: left;   
+            max-height: 150px;
+            width: 40%;
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <section class="home">
+            <h2>Grade Checker</h2>
+        </section>
+    </header>
+    <section class="form">
+        <section class="container">
+            <label for="nilai">Input nilai siswa:</label>
+            <input type="number" id="nilai" placeholder="Masukkan nilai">
+            <button onclick="cekNilai()">Cek Nilai</button>
+        </section>
+        <section class="history-form">
+            <h3>Riwayat Input:</h3>
+            <div id="history"></div>
+        </section>
+    </section>
+
+    <script>
+        var historyData = [];
+    
+        function cekNilai() {
+            var nilaiInput = document.getElementById('nilai').value;
+    
+            if (isNaN(nilaiInput) || nilaiInput === "") {
+                alert("Masukkan nilai yang valid!");
+                return;
+            }
+    
+            var nilaiAngka = parseFloat(nilaiInput);
+    
+            var nilaiHuruf;
+            if (nilaiAngka >= 85 && nilaiAngka <= 100) {
+                nilaiHuruf = "A";
+            } else if (nilaiAngka >= 75 && nilaiAngka < 85) {
+                nilaiHuruf = "B";
+            } else if (nilaiAngka >= 60 && nilaiAngka < 75) {
+                nilaiHuruf = "C";
+            } else if (nilaiAngka >= 0 && nilaiAngka < 60) {
+                nilaiHuruf = "D";
+            } else {
+                alert("Masukkan nilai yang valid (0 - 100)");
+                return;
+            }
+    
+            var jenisBilangan = (nilaiAngka % 2 === 0) ? "genap" : "ganjil";
+    
+            alert(`
+                Nilai angka: ${nilaiAngka}
+                Nilai huruf: ${nilaiHuruf}
+                Bilangan ${jenisBilangan}
+            `);
+    
+            if (nilaiAngka <= 100) {
+                historyData.push({
+                    nilaiAngka: nilaiAngka,
+                    nilaiHuruf: nilaiHuruf,
+                    jenisBilangan: jenisBilangan
+                });
+            }
+    
+            tampilkanRiwayat();
+        }
+    
+        function tampilkanRiwayat() {
+            var historyElement = document.getElementById('history');
+            historyElement.innerHTML = "";
+    
+            if (historyData.length > 0) {
+                historyElement.innerHTML = "<ul>";
+                for (var i = 0; i < historyData.length; i++) {
+                    historyElement.innerHTML += `
+                        <li>
+                            Nilai: ${historyData[i].nilaiAngka} - 
+                            Huruf: ${historyData[i].nilaiHuruf} - 
+                            Jenis Bilangan: ${historyData[i].jenisBilangan}
+                        </li>
+                    `;
+                }
+                historyElement.innerHTML += "</ul>";
+            } else {
+                historyElement.innerHTML = "Tidak ada riwayat input.";
+            }
+        }
+    </script>
+    
+</body>
+
+</html>
